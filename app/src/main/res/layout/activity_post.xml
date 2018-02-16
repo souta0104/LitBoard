@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.lifeistech.android.litboard.PostActivity">
+
+    <LinearLayout
+        android:id="@+id/linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        >
+
+        <fragment
+            android:id="@+id/To"
+            android:name="com.lifeistech.android.litboard.fragment.ToMessageTabFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:layout_marginBottom="10dp"
+            tools:layout="@layout/fragment_tab_message_to"
+            ></fragment>
+
+
+        <fragment
+            android:id="@+id/sendForm"
+            android:name="com.lifeistech.android.litboard.fragment.SendTabFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:layout="@layout/fragment_tab_send"></fragment>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
