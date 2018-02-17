@@ -1,14 +1,14 @@
 package com.lifeistech.android.litboard;
 
-/**
- * Created by Soutahagiwara on 2018/02/14.
- */
-
-public class FromMassageData {
+public class MessageData {
     private String message;
     private int minute;
     private int hour;
     private String sender;
+
+    public MessageData(){
+
+    }
 
     public String getMessage() {
         return message;

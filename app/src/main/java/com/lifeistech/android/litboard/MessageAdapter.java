@@ -11,23 +11,23 @@ import java.util.ArrayList;
  * Created by Soutahagiwara on 2018/02/14.
  */
 
-public class ToMessageAdapter extends RecyclerView.Adapter<ToMessageViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
 
-    private ArrayList<ToMessageData> list;
+    private ArrayList<MessageData> list;
 
-    public ToMessageAdapter(ArrayList<ToMessageData> list) {
+    public MessageAdapter(ArrayList<MessageData> list) {
         this.list = list;
     }
 
     @Override
-    public ToMessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_received, parent, false);
-        ToMessageViewHolder vh = new ToMessageViewHolder(inflate);
+        MessageViewHolder vh = new MessageViewHolder(inflate);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(ToMessageViewHolder holder, int position) {
+    public void onBindViewHolder(MessageViewHolder holder, int position) {
         holder.textMessageName.setText(list.get(position).getSender().toString());
         holder.textMessageBodyTo.setText(list.get(position).getMessage().toString());
         holder.textMessageTimeTo.setText(list.get(position).getHour() + ":" + list.get(position).getMinute());

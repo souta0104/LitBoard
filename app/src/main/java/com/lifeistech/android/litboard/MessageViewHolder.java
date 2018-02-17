@@ -8,12 +8,12 @@ import android.widget.TextView;
  * Created by Soutahagiwara on 2018/02/14.
  */
 
-public class ToMessageViewHolder extends RecyclerView.ViewHolder {
+public class MessageViewHolder extends RecyclerView.ViewHolder {
     public TextView textMessageName;
     public TextView textMessageBodyTo;
     public TextView textMessageTimeTo;
     
-    public ToMessageViewHolder(View itemView) {
+    public MessageViewHolder(View itemView) {
         super(itemView);
 
         textMessageName = (TextView) itemView.findViewById(R.id.text_message_name);

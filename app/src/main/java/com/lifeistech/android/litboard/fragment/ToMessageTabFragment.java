@@ -7,12 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.lifeistech.android.litboard.MainActivity;
 import com.lifeistech.android.litboard.R;
-import com.lifeistech.android.litboard.ToMessageAdapter;
-import com.lifeistech.android.litboard.ToMessageData;
+import com.lifeistech.android.litboard.MessageAdapter;
+import com.lifeistech.android.litboard.MessageData;
 
 import java.util.ArrayList;
 
@@ -24,14 +22,14 @@ public class ToMessageTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_tab_message_to, container, false);
+        View v = inflater.inflate(R.layout.fragment_tab_message, container, false);
 
         RecyclerView rv = (RecyclerView) v.findViewById(R.id.RecyclerViewTo);
 
-        ArrayList<ToMessageData> list = new ArrayList<>();
+        ArrayList<MessageData> list = new ArrayList<>();
         list.add(dataSave("hoge","ts1",11,13));
 
-        ToMessageAdapter adapter = new ToMessageAdapter(list);
+        MessageAdapter adapter = new MessageAdapter(list);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setHasFixedSize(true);
@@ -43,12 +41,12 @@ public class ToMessageTabFragment extends Fragment {
         return v;
     }
 
-    public ToMessageData dataSave(String sender,String message,int hour,int minute){
-        ToMessageData toMessageData = new ToMessageData();
-        toMessageData.setSender(sender);
-        toMessageData.setMessage(message);
-        toMessageData.setHour(hour);
-        toMessageData.setMinute(minute);
-        return toMessageData;
+    public MessageData dataSave(String sender, String message, int hour, int minute){
+        MessageData messageData = new MessageData();
+        messageData.setSender(sender);
+        messageData.setMessage(message);
+        messageData.setHour(hour);
+        messageData.setMinute(minute);
+        return messageData;
     }
 }
