@@ -24,10 +24,10 @@ public class ToMessageTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tab_message, container, false);
 
-        RecyclerView rv = (RecyclerView) v.findViewById(R.id.RecyclerViewTo);
+        RecyclerView rv = (RecyclerView) v.findViewById(R.id.RecyclerView);
 
         ArrayList<MessageData> list = new ArrayList<>();
-        list.add(dataSave("hoge","ts1",11,13));
+        list.add(dataSave("すがっち","飯食いに行こうぜ！",11,13));
 
         MessageAdapter adapter = new MessageAdapter(list);
 
@@ -36,7 +36,7 @@ public class ToMessageTabFragment extends Fragment {
         rv.setLayoutManager(llm);
         rv.setAdapter(adapter);
 
-        list.add(dataSave("test","ts2fghjklkjhgfghjklkjhgfghjkjhgfghjklkjh",00,19));
+        list.add(dataSave("sender","やだ。",11,17));
 
         return v;
     }

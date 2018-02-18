@@ -10,6 +10,7 @@ public class MessageData {
 
     }
 
+
     public String getMessage() {
         return message;
     }

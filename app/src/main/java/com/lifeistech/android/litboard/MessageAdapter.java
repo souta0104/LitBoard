@@ -7,9 +7,6 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-/**
- * Created by Soutahagiwara on 2018/02/14.
- */
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
 
@@ -21,17 +18,35 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
 
     @Override
     public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_received, parent, false);
-        MessageViewHolder vh = new MessageViewHolder(inflate);
+        MessageViewHolder vh;
+        if (viewType == 0) {
+            View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_received, parent, false);
+            vh = new MessageViewHolder(inflate);
+        } else {
+            View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_sent, parent, false);
+            vh = new MessageViewHolder(inflate);
+        }
         return vh;
     }
 
     @Override
     public void onBindViewHolder(MessageViewHolder holder, int position) {
-        holder.textMessageName.setText(list.get(position).getSender().toString());
-        holder.textMessageBodyTo.setText(list.get(position).getMessage().toString());
-        holder.textMessageTimeTo.setText(list.get(position).getHour() + ":" + list.get(position).getMinute());
+        if (holder.getItemViewType() == 0) {
+            holder.textMessageName.setText(list.get(position).getSender().toString());
+            holder.textMessageBodyTo.setText(list.get(position).getMessage().toString());
+            holder.textMessageTimeTo.setText(list.get(position).getHour() + ":" + list.get(position).getMinute());
+        }else {
+            holder.textMessageBodyFrom.setText(list.get(position).getMessage().toString());
+            holder.textMessageTimeFrom.setText(list.get(position).getHour() + ":" + list.get(position).getMinute());
+        }
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        // サンプルコードなので手軽に position が偶数の項目と奇数の項目で view type を分ける。
+        return position % 2;
+    }
+
 
     @Override
     public int getItemCount() {
