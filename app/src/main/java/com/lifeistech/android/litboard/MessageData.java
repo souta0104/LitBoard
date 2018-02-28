@@ -1,45 +1,38 @@
 package com.lifeistech.android.litboard;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class MessageData {
+    private int userId;
+    private String userName;
+    private int chatroomId;
+    private String chatrommName;
+    private HashMap<String, Boolean> isChatroomJoin;
+    private HashMap<String, Boolean> isMessageHave;
+    private int messageId;
     private String message;
-    private int minute;
+    private int sender;
     private int hour;
-    private String sender;
+    private int minute;
 
-    public MessageData(){
+    public MessageData() {
 
     }
 
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
+    public MessageData(int userId, String userName, int chatroomId, String chatrommName,
+                       HashMap<String, Boolean> isChatroomJoin, HashMap<String, Boolean> isMessageHave, int messageId, String message, int sender, int hour, int minute) {
+        this.userId = userId;
+        this.userName = userName;
+        this.chatroomId = chatroomId;
+        this.chatrommName = chatrommName;
+        this.isChatroomJoin = isChatroomJoin;
+        this.isMessageHave = isMessageHave;
+        this.messageId = messageId;
         this.message = message;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public void setMinute(int minute) {
+        this.sender = sender;
+        this.hour = hour;
         this.minute = minute;
     }
 
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
 }

@@ -16,7 +16,7 @@
 
         <fragment
             android:id="@+id/To"
-            android:name="com.lifeistech.android.litboard.fragment.ToMessageTabFragment"
+            android:name="com.lifeistech.android.litboard.fragment.MessageTabFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="8"
@@ -29,9 +29,9 @@
             android:id="@+id/sendForm"
             android:name="com.lifeistech.android.litboard.fragment.SendTabFragment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            tools:layout="@layout/fragment_tab_send"></fragment>
+            android:layout_height="60dp"
+            tools:layout="@layout/fragment_tab_send"
+            ></fragment>
 
 
     </LinearLayout>

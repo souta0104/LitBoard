@@ -27,7 +27,7 @@
             android:orientation="horizontal">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/editText"
+                android:id="@+id/editTextSend"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="4dp"
@@ -45,7 +45,7 @@
                 android:background="@null"
                 app:srcCompat="@drawable/ic_send_black_24dp"
                 tools:ignore="VectorDrawableCompat"
-                android:onClick="button"/>
+                android:onClick="send"/>
         </LinearLayout>
 
     </android.support.design.widget.TextInputLayout>
