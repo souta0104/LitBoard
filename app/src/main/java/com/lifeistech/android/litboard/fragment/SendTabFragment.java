@@ -32,7 +32,7 @@ public class SendTabFragment extends Fragment {
         v.findViewById(R.id.imageButton3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!editText.getText().toString().equals(null)||!e ditText.getText().toString().equals("")) {
+                if (!editText.getText().toString().equals(null)||!editText.getText().toString().equals("")) {
                     data = MessageTabFragment.dataSave("テスターA", editText.getText().toString(), 11, 13);
                     Log.d("log", "びよーん");
                     refMsg.push().setValue(data);

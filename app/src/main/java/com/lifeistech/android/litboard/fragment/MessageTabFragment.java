@@ -58,10 +58,6 @@ public class MessageTabFragment extends Fragment {
 
     public static MessageData dataSave(String sender, String message, int hour, int minute) {
         MessageData messageData = new MessageData();
-        messageData.setSender(sender);
-        messageData.setMessage(message);
-        messageData.setHour(hour);
-        messageData.setMinute(minute);
         return messageData;
     }
 }
