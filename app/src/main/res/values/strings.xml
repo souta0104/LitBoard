@@ -4,4 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="other_size_hint"><font size="20">右のアイコンをタップで送信</font></string>
+    <string name="facebook_app_id">864739057061090</string>
+    <string name="fb_login_protocol_scheme">fb864739057061090</string>
+
 </resources>
