@@ -37,7 +37,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
             holder.textMessageTimeFrom.setText(list.get(position).getHour() + ":" + list.get(position).getMinute());
 
         } else {
-            holder.textMessageName.setText(list.get(position).getSender().toString());
+            holder.textMessageName.setText(list.get(position).getSender());
             holder.textMessageBodyTo.setText(list.get(position).getMessage().toString());
             holder.textMessageTimeTo.setText(list.get(position).getHour() + ":" + list.get(position).getMinute());
         }

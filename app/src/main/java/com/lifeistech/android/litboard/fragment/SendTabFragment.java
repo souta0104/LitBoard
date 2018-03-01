@@ -34,7 +34,6 @@ public class SendTabFragment extends Fragment {
             public void onClick(View v) {
                 if (!editText.getText().toString().equals(null)||!editText.getText().toString().equals("")) {
                     data = MessageTabFragment.dataSave("テスターA", editText.getText().toString(), 11, 13);
-                    Log.d("log", "びよーん");
                     refMsg.push().setValue(data);
                 }
             }

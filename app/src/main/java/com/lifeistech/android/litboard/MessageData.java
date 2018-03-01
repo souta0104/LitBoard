@@ -35,4 +35,91 @@ public class MessageData {
         this.minute = minute;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public int getChatroomId() {
+        return chatroomId;
+    }
+
+    public int getMessageId() {
+        return messageId;
+    }
+
+    public int getSender() {
+        return sender;
+    }
+
+    public String getChatrommName() {
+        return chatrommName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public HashMap<String, Boolean> getIsChatroomJoin() {
+        return isChatroomJoin;
+    }
+
+    public HashMap<String, Boolean> getIsMessageHave() {
+        return isMessageHave;
+    }
+
+    public void setSender(int sender) {
+        this.sender = sender;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setChatrommName(String chatrommName) {
+        this.chatrommName = chatrommName;
+    }
+
+    public void setChatroomId(int chatroomId) {
+        this.chatroomId = chatroomId;
+    }
+
+    public void setIsChatroomJoin(HashMap<String, Boolean> isChatroomJoin) {
+        this.isChatroomJoin = isChatroomJoin;
+    }
+
+    public void setIsMessageHave(HashMap<String, Boolean> isMessageHave) {
+        this.isMessageHave = isMessageHave;
+    }
+
+    public void setMessageId(int messageId) {
+        this.messageId = messageId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }
