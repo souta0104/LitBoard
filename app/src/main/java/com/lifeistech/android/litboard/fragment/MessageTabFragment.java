@@ -1,5 +1,6 @@
 package com.lifeistech.android.litboard.fragment;
 
+import android.content.ClipData;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +28,9 @@ public class MessageTabFragment extends Fragment {
     ArrayList<MessageData> list;
     MessageAdapter adapter;
 
+    ArrayList<MessageData> message;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -33,17 +38,23 @@ public class MessageTabFragment extends Fragment {
 
         RecyclerView rv = (RecyclerView) v.findViewById(R.id.RecyclerView);
 
-        list = new ArrayList<>();
-        adapter = new MessageAdapter(list);
+        message = new ArrayList<MessageData>();
+        adapter = new MessageAdapter(message);
+
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setHasFixedSize(true);
         rv.setLayoutManager(llm);
         rv.setAdapter(adapter);
 
-        refMsg.addValueEventListener(new ValueEventListener() {
+
+        refMsg.child("chat").child("0").child("message").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                message.clear();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    message.add(dataSnapshot1.getValue(MessageData.class));
+                }
 
             }
 
@@ -56,8 +67,13 @@ public class MessageTabFragment extends Fragment {
         return v;
     }
 
-    public static MessageData dataSave(String sender, String message, int hour, int minute) {
+
+    public static MessageData dataSave(int sender, String message, int hour, int minute) {
         MessageData messageData = new MessageData();
+        messageData.setSender(sender);
+        messageData.setMessage(message);
+        messageData.setHour(hour);
+        messageData.setMinute(minute);
         return messageData;
     }
 }
