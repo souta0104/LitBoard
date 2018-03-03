@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "132063241766",
-    "firebase_url": "https://litboard-1edef.firebaseio.com",
-    "project_id": "litboard-1edef",
-    "storage_bucket": "litboard-1edef.appspot.com"
+    "project_number": "283877874997",
+    "firebase_url": "https://litboard-6cf7c.firebaseio.com",
+    "project_id": "litboard-6cf7c",
+    "storage_bucket": "litboard-6cf7c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:132063241766:android:53198f198c957d87",
+        "mobilesdk_app_id": "1:283877874997:android:53198f198c957d87",
         "android_client_info": {
           "package_name": "com.lifeistech.android.litboard"
         }
       },
       "oauth_client": [
         {
-          "client_id": "132063241766-lrtr8jrjejdf2h09bak4bm5peldbnrkn.apps.googleusercontent.com",
+          "client_id": "283877874997-l3a0f7u9i91rihdnerlmpki8bj5sbhuv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBdw4aKQS7AcNMIzuOzLWInwzgAGwkIWm8"
+          "current_key": "AIzaSyAFXPdv7-UQphQG0o_SYlSVmomDr8skITU"
         }
       ],
       "services": {

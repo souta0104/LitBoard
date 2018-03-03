@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,8 +30,8 @@ public class SendTabFragment extends Fragment {
     ArrayList<MessageData> data;
 
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference refMsg = database.getReference();
+    FirebaseDatabase database;
+    DatabaseReference refMsg;
 
 
     @Override
@@ -39,18 +40,17 @@ public class SendTabFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tab_send, container, false);
         data = new ArrayList<MessageData>();
         editText = (EditText) v.findViewById(R.id.editTextSend);
+        database = FirebaseDatabase.getInstance();
+        refMsg = database.getReference();
 
-        Log.d("editText", editText.getText().toString());
         v.findViewById(R.id.imageButton3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (!(editText.getText().toString().equals("")) || !(editText.getText().equals(null))) {
-                    Calendar cTime = Calendar.getInstance();
-                    MessageData messageData = MessageTabFragment.dataSave(0, editText.getText().toString(), cTime.get(Calendar.HOUR_OF_DAY), cTime.get(Calendar.MINUTE));
-                    data.add(messageData);
-                    refMsg.child("chat").child("0").child("message").setValue(data);
-                    editText.setText(null);
-//                }
+                Calendar cTime = Calendar.getInstance();
+                MessageData messageData = MessageTabFragment.dataSave(0, editText.getText().toString(), cTime.get(Calendar.HOUR_OF_DAY), cTime.get(Calendar.MINUTE));
+                data.add(messageData);
+                refMsg.child("chat").child("0").child("message").setValue(data);
+                editText.setText(null);
             }
         });
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,7 +26,6 @@ import java.util.ArrayList;
 public class MessageTabFragment extends Fragment {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference refMsg = database.getReference();
-    ArrayList<MessageData> list;
     MessageAdapter adapter;
 
     ArrayList<MessageData> message;
@@ -63,6 +63,7 @@ public class MessageTabFragment extends Fragment {
 
             }
         });
+
 
         return v;
     }
