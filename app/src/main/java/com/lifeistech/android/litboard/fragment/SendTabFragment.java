@@ -19,9 +19,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.lifeistech.android.litboard.MessageData;
 import com.lifeistech.android.litboard.R;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 
 public class SendTabFragment extends Fragment {
@@ -46,8 +48,13 @@ public class SendTabFragment extends Fragment {
         v.findViewById(R.id.imageButton3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //時間取得関係ここから
                 Calendar cTime = Calendar.getInstance();
-                MessageData messageData = MessageTabFragment.dataSave(0, editText.getText().toString(), cTime.get(Calendar.HOUR_OF_DAY), cTime.get(Calendar.MINUTE));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+                //ここまで
+
+                MessageData messageData = MessageTabFragment.dataSave(0, editText.getText().toString(),
+                        cTime.get(cTime.HOUR_OF_DAY), cTime.get(cTime.MINUTE));
                 data.add(messageData);
                 refMsg.child("chat").child("0").child("message").setValue(data);
                 editText.setText(null);

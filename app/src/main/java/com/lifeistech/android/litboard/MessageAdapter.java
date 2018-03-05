@@ -37,7 +37,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
             holder.textMessageTimeFrom.setText(list.get(position).getHour() + ":" + list.get(position).getMinute());
 
         } else {
-            holder.textMessageName.setText(list.get(position).getSender());
+//            holder.textMessageName.setText(list.get(position).getSender());
             holder.textMessageBodyTo.setText(list.get(position).getMessage().toString());
             holder.textMessageTimeTo.setText(list.get(position).getHour() + ":" + list.get(position).getMinute());
         }
@@ -46,7 +46,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     @Override
     public int getItemViewType(int position) {
         // サンプルコードなので手軽に position が偶数の項目と奇数の項目で view type を分ける。
-        return 0;
+        return 1;
     }
 
 
