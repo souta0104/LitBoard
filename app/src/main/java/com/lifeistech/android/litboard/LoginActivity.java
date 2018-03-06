@@ -2,6 +2,7 @@ package com.lifeistech.android.litboard;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,45 +25,40 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 
 public class LoginActivity extends AppCompatActivity {
     CallbackManager callbackManager;
-    LoginButton loginButton;
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
     Button btn_fb_login;
+    FirebaseDatabase database;
+    DatabaseReference refMsg;
+    FirebaseUser user;
+    HashMap<Integer, Boolean> chatJoin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        btn_fb_login = (Button) findViewById(R.id.button2);
+
         callbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
-//
-//        loginButton = (LoginButton) findViewById(R.id.login_button);
-//        loginButton.setReadPermissions("email");
-//        // Callback registration
-//        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-//            @Override
-//            public void onSuccess(LoginResult loginResult) {
-//                // App code
-//                Toast.makeText(getApplicationContext(), "ログイン完了", Toast.LENGTH_SHORT).show();
-//                handleFacebookAccessToken(loginResult.getAccessToken());
-//                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//                // App code
-//            }
-//
-//            @Override
-//            public void onError(FacebookException exception) {
-//                // App code
-//            }
-//        });
+        database = FirebaseDatabase.getInstance();
+        refMsg = database.getReference();
+        chatJoin = new HashMap<>();
+        user = mAuth.getCurrentUser();
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -70,8 +66,6 @@ public class LoginActivity extends AppCompatActivity {
                     public void onSuccess(LoginResult loginResult) {
                         Log.d("Success", "Login");
                         handleFacebookAccessToken(loginResult.getAccessToken());
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        finish();
                     }
 
                     @Override
@@ -84,22 +78,18 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
-        btn_fb_login = (Button) findViewById(R.id.button2);
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -112,8 +102,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("log", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-
+                            refMsg.child("user").setValue(getFirebaseUser());
+                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("log", "signInWithCredential:failure", task.getException());
@@ -122,9 +112,18 @@ public class LoginActivity extends AppCompatActivity {
 
                     }
                 });
+
     }
 
     public void loginfacebook(View v) {
         LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
     }
+
+    public ArrayList<UserData> getFirebaseUser() {
+        ArrayList<UserData> data = new ArrayList<>();
+        user = mAuth.getCurrentUser();
+        data.add(new UserData("souta", user.getUid(), chatJoin));
+        return data;
+    }
+
 }

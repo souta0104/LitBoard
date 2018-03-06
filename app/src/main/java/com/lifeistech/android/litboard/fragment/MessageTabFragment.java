@@ -22,6 +22,7 @@ import com.lifeistech.android.litboard.MessageAdapter;
 import com.lifeistech.android.litboard.MessageData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MessageTabFragment extends Fragment {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
