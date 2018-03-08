@@ -61,21 +61,40 @@ public class MainActivity extends AppCompatActivity {
                 user = auth.getCurrentUser();
                 if (user != null) {
                     int i = 0;
+                    Boolean isMatch = false;
+
                     do {
-                        if (data.size() == 0) {
-                            setFirebaseUser("sota", auth.getCurrentUser().getUid(), auth.getCurrentUser().getEmail());
-                        } else if (!(firebaseAuth.getCurrentUser().getUid().equals(data.get(i).getUID()))) {
-                            setFirebaseUser("sota", auth.getCurrentUser().getUid(), auth.getCurrentUser().getEmail());
+                        if (data.size() != 0) {
+                            if (firebaseAuth.getCurrentUser().getUid().equals(data.get(i).getUID())) {
+                                isMatch = true;
+                                break;
+                            } else {
+                                isMatch = false;
+                            }
                         }
-                        i++;
-                    } while (i > data.size());
+                        if (isMatch) {
+                            continue;
+                        } else {
+                            i++;
+                        }
+                    } while (i < data.size());
+
+                    if (data.size() == 0) {
+                        setFirebaseUser("sota", auth.getCurrentUser().getUid(), auth.getCurrentUser().getEmail());
+                    } else if (isMatch == false) {
+                        setFirebaseUser("sota", auth.getCurrentUser().getUid(), auth.getCurrentUser().getEmail());
+                    }
                 }
             }
         });
 
-        if (user == null) {
+        if (user == null)
+
+        {
             startLoginActivity();
-        } else {
+        } else
+
+        {
             text.setText(user.getEmail());
         }
     }
