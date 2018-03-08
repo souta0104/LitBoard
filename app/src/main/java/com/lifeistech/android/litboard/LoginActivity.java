@@ -66,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onSuccess(LoginResult loginResult) {
                         Log.d("Success", "Login");
                         handleFacebookAccessToken(loginResult.getAccessToken());
+                        finish();
                     }
 
                     @Override
@@ -102,8 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("log", "signInWithCredential:success");
-                            refMsg.child("user").setValue(getFirebaseUser());
-                            finish();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("log", "signInWithCredential:failure", task.getException());
@@ -115,15 +115,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+
     public void loginfacebook(View v) {
         LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
     }
 
-    public ArrayList<UserData> getFirebaseUser() {
-        ArrayList<UserData> data = new ArrayList<>();
-        user = mAuth.getCurrentUser();
-        data.add(new UserData("souta", user.getUid(), chatJoin));
-        return data;
-    }
 
 }

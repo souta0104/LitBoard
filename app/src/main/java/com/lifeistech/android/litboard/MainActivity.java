@@ -2,12 +2,14 @@ package com.lifeistech.android.litboard;
 
 import android.content.Intent;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference refMsg;
     FirebaseUser user;
     HashMap<Integer, Boolean> chatJoin;
-    ArrayList<UserData> userData;
+    static ArrayList<UserData> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,24 +38,63 @@ public class MainActivity extends AppCompatActivity {
         text = (TextView) findViewById(R.id.text1);
         database = FirebaseDatabase.getInstance();
         refMsg = database.getReference();
-
+        data = new ArrayList<UserData>();
         user = auth.getCurrentUser();
 
-        user = auth.getCurrentUser();
+        refMsg.child("user").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                data.clear();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    data.add(dataSnapshot1.getValue(UserData.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = auth.getCurrentUser();
+                if (user != null) {
+                    int i = 0;
+                    do {
+                        if (data.size() == 0) {
+                            setFirebaseUser("sota", auth.getCurrentUser().getUid(), auth.getCurrentUser().getEmail());
+                        } else if (!(firebaseAuth.getCurrentUser().getUid().equals(data.get(i).getUID()))) {
+                            setFirebaseUser("sota", auth.getCurrentUser().getUid(), auth.getCurrentUser().getEmail());
+                        }
+                        i++;
+                    } while (i > data.size());
+                }
+            }
+        });
 
         if (user == null) {
-            startActivity(new Intent(this, LoginActivity.class));
-
+            startLoginActivity();
         } else {
-            text.setText(user.getEmail().toString());
-
+            text.setText(user.getEmail());
         }
     }
 
     public void logout(View v) {
         LoginManager.getInstance().logOut();
         auth.signOut();
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+        startLoginActivity();
+
     }
+
+    public void setFirebaseUser(String name, String Uid, String email) {
+        user = auth.getCurrentUser();
+        data.add(new UserData(name, Uid, email));
+        refMsg.child("user").setValue(data);
+    }
+
+    public void startLoginActivity() {
+        startActivity(new Intent(this, LoginActivity.class));
+    }
+
 }
