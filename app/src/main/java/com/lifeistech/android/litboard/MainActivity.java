@@ -1,6 +1,7 @@
 package com.lifeistech.android.litboard;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference refMsg;
     FirebaseUser user;
     HashMap<Integer, Boolean> chatJoin;
-    static ArrayList<UserData> data;
+    ArrayList<UserData> data;
+    SharedPreferences pref;
+    String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,61 +43,12 @@ public class MainActivity extends AppCompatActivity {
         refMsg = database.getReference();
         data = new ArrayList<UserData>();
         user = auth.getCurrentUser();
+        pref = getSharedPreferences("userName", MODE_PRIVATE);
 
-        refMsg.child("user").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                data.clear();
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    data.add(dataSnapshot1.getValue(UserData.class));
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = auth.getCurrentUser();
-                if (user != null) {
-                    int i = 0;
-                    Boolean isMatch = false;
-
-                    do {
-                        if (data.size() != 0) {
-                            if (firebaseAuth.getCurrentUser().getUid().equals(data.get(i).getUID())) {
-                                isMatch = true;
-                                break;
-                            } else {
-                                isMatch = false;
-                            }
-                        }
-                        if (isMatch) {
-                            continue;
-                        } else {
-                            i++;
-                        }
-                    } while (i < data.size());
-
-                    if (data.size() == 0) {
-                        setFirebaseUser("sota", auth.getCurrentUser().getUid(), auth.getCurrentUser().getEmail());
-                    } else if (isMatch == false) {
-                        setFirebaseUser("sota", auth.getCurrentUser().getUid(), auth.getCurrentUser().getEmail());
-                    }
-                }
-            }
-        });
-
-        if (user == null)
-
-        {
+        if (user == null) {
             startLoginActivity();
-        } else
-
-        {
+        } else {
             text.setText(user.getEmail());
         }
     }
@@ -106,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setFirebaseUser(String name, String Uid, String email) {
-        user = auth.getCurrentUser();
-        data.add(new UserData(name, Uid, email));
-        refMsg.child("user").setValue(data);
-    }
+//    public void setFirebaseUser(String name, String Uid, String email) {
+//        user = auth.getCurrentUser();
+//        data.add(new UserData(name, Uid, email));
+//        refMsg.child("user").setValue(data);
+//    }
 
     public void startLoginActivity() {
         startActivity(new Intent(this, LoginActivity.class));

@@ -3,11 +3,14 @@ package com.lifeistech.android.litboard;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,9 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference refMsg;
     FirebaseUser user;
     HashMap<Integer, Boolean> chatJoin;
+    ViewPager pager;
+    FragmentPagerAdapter adapter;
+    int currentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         btn_fb_login = (Button) findViewById(R.id.button2);
+
+        pager = (ViewPager) findViewById(R.id.view_pager);
+
+        adapter = new LoginPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(adapter);
+        currentPage = 0;
 
         callbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
@@ -66,7 +78,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void onSuccess(LoginResult loginResult) {
                         Log.d("Success", "Login");
                         handleFacebookAccessToken(loginResult.getAccessToken());
-                        finish();
+                        currentPage = 1;
+                        pager.setCurrentItem(currentPage);
                     }
 
                     @Override
@@ -79,6 +92,22 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
+
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 
@@ -116,10 +145,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
     public void loginfacebook(View v) {
         LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
     }
-
 
 }
