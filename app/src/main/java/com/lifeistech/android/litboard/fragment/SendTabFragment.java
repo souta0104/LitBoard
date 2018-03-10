@@ -1,6 +1,7 @@
 package com.lifeistech.android.litboard.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -35,6 +36,7 @@ public class SendTabFragment extends Fragment {
 
     FirebaseDatabase database;
     DatabaseReference refMsg;
+    SharedPreferences pref;
 
 
     @Override
@@ -45,17 +47,19 @@ public class SendTabFragment extends Fragment {
         editText = (EditText) v.findViewById(R.id.editTextSend);
         database = FirebaseDatabase.getInstance();
         refMsg = database.getReference();
+        pref = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
 
         v.findViewById(R.id.imageButton3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //時間取得関係ここから
                 Calendar cTime = Calendar.getInstance();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+                SimpleDateFormat sdfHour = new SimpleDateFormat("HH");
+                SimpleDateFormat sdfMinute = new SimpleDateFormat("mm");
                 //ここまで
 
-                MessageData messageData = MessageTabFragment.dataSave(0, editText.getText().toString(),
-                        cTime.get(cTime.HOUR_OF_DAY), cTime.get(cTime.MINUTE));
+                MessageData messageData = MessageTabFragment.dataSave(pref.getString("userName", ""), editText.getText().toString(),
+                        Integer.valueOf(sdfHour.format(cTime.getTime())), Integer.valueOf(sdfMinute.format(cTime.getTime())), pref.getString("userUid", ""));
                 data.add(messageData);
                 refMsg.child("chat").child("0").child("message").setValue(data);
                 editText.setText(null);
@@ -70,6 +74,38 @@ public class SendTabFragment extends Fragment {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     data.add(dataSnapshot1.getValue(MessageData.class));
                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        refMsg.child("chat").child("0").child("message").removeEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                data.clear();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    data.add(dataSnapshot1.getValue(MessageData.class));
+                }
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override

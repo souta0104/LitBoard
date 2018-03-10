@@ -9,15 +9,17 @@ public class UserData {
     private String UID;
     private HashMap<Integer, Boolean> chatJoin;
     private String email;
+    private String Uid_userName;
 
     public UserData() {
 
     }
 
-    public UserData(String userName, String UID, String email) {
+    public UserData(String userName, String UID, String email, String uid_userName) {
         this.userName = userName;
         this.UID = UID;
         this.email = email;
+        this.Uid_userName = uid_userName;
     }
 
     public String getUserName() {
@@ -50,5 +52,13 @@ public class UserData {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getUid_userName() {
+        return Uid_userName;
+    }
+
+    public void setUid_userName(String uid_userName) {
+        Uid_userName = uid_userName;
     }
 }

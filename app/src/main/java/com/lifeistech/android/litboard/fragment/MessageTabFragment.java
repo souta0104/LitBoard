@@ -1,6 +1,8 @@
 package com.lifeistech.android.litboard.fragment;
 
 import android.content.ClipData;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,8 +30,10 @@ public class MessageTabFragment extends Fragment {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference refMsg = database.getReference();
     MessageAdapter adapter;
+    int isMine;
 
     ArrayList<MessageData> message;
+    SharedPreferences pref;
 
 
     @Override
@@ -38,9 +42,11 @@ public class MessageTabFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tab_message, container, false);
 
         RecyclerView rv = (RecyclerView) v.findViewById(R.id.RecyclerView);
+        pref = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+        isMine = 0;
 
         message = new ArrayList<MessageData>();
-        adapter = new MessageAdapter(message);
+        adapter = new MessageAdapter(message, isMine);
 
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -54,7 +60,14 @@ public class MessageTabFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 message.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    message.add(dataSnapshot1.getValue(MessageData.class));
+                    MessageData messageData = dataSnapshot1.getValue(MessageData.class);
+                    message.add(messageData);
+                    if (messageData.getSenderUid().equals(pref.getString("userUid", ""))) {
+                        isMine = 0;
+                    } else {
+                        isMine = 1;
+
+                    }
                 }
 
             }
@@ -81,6 +94,13 @@ public class MessageTabFragment extends Fragment {
                 message.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     message.add(dataSnapshot1.getValue(MessageData.class));
+                    for (MessageData messageData : message) {
+                        if (messageData.getSenderUid() == pref.getString("userUid", "")) {
+                            isMine = 0;
+                        } else {
+                            isMine = 1;
+                        }
+                    }
                 }
 
             }
@@ -96,16 +116,18 @@ public class MessageTabFragment extends Fragment {
             }
         });
 
+
         return v;
     }
 
 
-    public static MessageData dataSave(int sender, String message, int hour, int minute) {
+    public static MessageData dataSave(String sender, String message, int hour, int minute, String senderUid) {
         MessageData messageData = new MessageData();
         messageData.setSender(sender);
         messageData.setMessage(message);
         messageData.setHour(hour);
         messageData.setMinute(minute);
+        messageData.setSenderUid(senderUid);
         return messageData;
     }
 }

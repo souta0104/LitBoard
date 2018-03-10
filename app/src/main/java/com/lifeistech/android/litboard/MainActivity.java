@@ -43,13 +43,14 @@ public class MainActivity extends AppCompatActivity {
         refMsg = database.getReference();
         data = new ArrayList<UserData>();
         user = auth.getCurrentUser();
-        pref = getSharedPreferences("userName", MODE_PRIVATE);
+        pref = getSharedPreferences("user", MODE_PRIVATE);
 
 
         if (user == null) {
             startLoginActivity();
         } else {
             text.setText(user.getEmail());
+            startActivity(new Intent(this, PostActivity.class));
         }
     }
 
@@ -57,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
         LoginManager.getInstance().logOut();
         auth.signOut();
         startLoginActivity();
+        pref.edit().remove("userName");
+        pref.edit().remove("userUid");
+        pref.edit().remove("userEmail");
+        pref.edit().remove("uid_userName");
 
     }
 

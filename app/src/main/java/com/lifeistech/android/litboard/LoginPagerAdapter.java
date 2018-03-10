@@ -13,7 +13,7 @@ import com.lifeistech.android.litboard.fragment.NameSetLoginFragment;
  */
 
 public class LoginPagerAdapter extends FragmentPagerAdapter {
-    private static final int PAGE_NUM = 3;
+    private static final int PAGE_NUM = 2;
 
     public LoginPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -29,7 +29,6 @@ public class LoginPagerAdapter extends FragmentPagerAdapter {
             default:
                 fragment = new NameSetLoginFragment();
                 break;
-
         }
         return fragment;
     }

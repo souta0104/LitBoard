@@ -63,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
 
         adapter = new LoginPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
-        currentPage = 0;
 
         callbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
