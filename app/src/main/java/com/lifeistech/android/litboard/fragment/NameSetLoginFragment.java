@@ -50,7 +50,7 @@ public class NameSetLoginFragment extends android.support.v4.app.Fragment {
         pref = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
         user = FirebaseAuth.getInstance().getCurrentUser();
         auth = FirebaseAuth.getInstance();
-        data = new ArrayList<UserData>();
+        data = new ArrayList<>();
         database = FirebaseDatabase.getInstance();
         refMsg = database.getReference();
 
@@ -60,6 +60,7 @@ public class NameSetLoginFragment extends android.support.v4.app.Fragment {
                 data.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     data.add(dataSnapshot1.getValue(UserData.class));
+
                 }
             }
 
@@ -111,9 +112,12 @@ public class NameSetLoginFragment extends android.support.v4.app.Fragment {
                         pref.edit().putString("userEmail", userEmail).commit();
                     } else {
                         String currentUserName = pref.getString("userName", "");
-                        data.indexOf(currentUserName);
-                        data.remove(data.indexOf(currentUserName) + 1);
-                        setFirebaseUser(userName, userUid, userEmail, userUid + "_" + userName);
+                        UserData ud = new UserData(currentUserName,userUid,userEmail,userUid + "_" + userName);
+                        int position = data.indexOf(ud);
+                        data.remove(position);
+                        setFirebaseUsersecond(position,userName, userUid, userEmail, userUid + "_" + userName);
+                        pref.edit().remove("userName");
+                        pref.edit().putString("userName", userName).commit();
                         pref.edit().putString("uid_userName", userUid + "_" + userName).commit();
                     }
 
@@ -129,6 +133,12 @@ public class NameSetLoginFragment extends android.support.v4.app.Fragment {
     public void setFirebaseUser(String name, String Uid, String email, String uid_userName) {
         user = auth.getCurrentUser();
         data.add(new UserData(name, Uid, email, uid_userName));
+        refMsg.child("user").setValue(data);
+    }
+
+    public void setFirebaseUsersecond(int position,String name, String Uid, String email, String uid_userName) {
+        user = auth.getCurrentUser();
+        data.add(position,new UserData(name, Uid, email, uid_userName));
         refMsg.child("user").setValue(data);
     }
 

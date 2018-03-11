@@ -15,6 +15,7 @@ public class UserData {
 
     }
 
+
     public UserData(String userName, String UID, String email, String uid_userName) {
         this.userName = userName;
         this.UID = UID;
@@ -60,5 +61,19 @@ public class UserData {
 
     public void setUid_userName(String uid_userName) {
         Uid_userName = uid_userName;
+    }
+
+    public boolean equals(Object obj) {
+        if (obj == UserData.class) {
+            UserData ud = (UserData) obj;
+            String tcStr = ud.getUserName();
+            return ud.equals(tcStr);
+        } else if (obj.equals(String.class)) {
+            String ud = obj.toString();
+            String tcStr = ud;
+            return ud.equals(tcStr);
+        }else{
+            return false;
+        }
     }
 }
