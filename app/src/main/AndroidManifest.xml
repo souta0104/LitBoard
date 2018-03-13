@@ -21,7 +21,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".PostActivity">
+        <activity
+            android:name=".PostActivity"
+            android:windowSoftInputMode="adjustPan">
 
         </activity>
 

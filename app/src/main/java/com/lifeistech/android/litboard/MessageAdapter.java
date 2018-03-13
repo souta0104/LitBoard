@@ -18,9 +18,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     private ArrayList<MessageData> list;
     int isMine;
 
-    public MessageAdapter(ArrayList<MessageData> list, int isMine) {
+    public MessageAdapter(ArrayList<MessageData> list) {
         this.list = list;
-        this.isMine=isMine;
     }
 
     @Override
@@ -39,22 +38,27 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
 
     @Override
     public void onBindViewHolder(MessageViewHolder holder, int position) {
-        if (isMine == 0) {
+        if (holder.getItemViewType() == 0) {
             holder.textMessageBodyFrom.setText(list.get(position).getMessage().toString());
             holder.textMessageTimeFrom.setText(list.get(position).getHour() + ":" + list.get(position).getMinute());
 
         } else {
-//            holder.textMessageName.setText(list.get(position).getSender());
-            holder.textMessageBodyTo.setText(list.get(position).getMessage().toString());
+            holder.textMessageName.setText(list.get(position).getSender());
+            holder.textMessageBodyTo.setText(list.get(position).getMessage());
             holder.textMessageTimeTo.setText(list.get(position).getHour() + ":" + list.get(position).getMinute());
         }
     }
 
-
-
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        // サンプルコードなので手軽に position が偶数の項目と奇数の項目で view type を分ける。
+        isMine = list.get(position).getMine();
+        return isMine;
     }
 
 }

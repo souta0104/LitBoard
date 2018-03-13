@@ -1,25 +1,32 @@
 package com.lifeistech.android.litboard;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class MessageData {
     private String message;
     private String sender;
     private int hour;
     private int minute;
     private String senderUid;
+    private int isMine;
 
     public MessageData() {
 
     }
 
-    public MessageData(String message, String sender, int hour, int minute,String senderUid) {
+    public MessageData(String message, String sender, int hour, int minute, String senderUid, int isMine) {
         this.message = message;
         this.sender = sender;
         this.hour = hour;
         this.minute = minute;
-        this.senderUid=senderUid;
+        this.senderUid = senderUid;
+        this.isMine = isMine;
+    }
+
+    public MessageData(String sender, String message, int hour, int minute, String senderUid) {
+        this.message = message;
+        this.sender = sender;
+        this.hour = hour;
+        this.minute = minute;
+        this.senderUid = senderUid;
     }
 
 
@@ -62,5 +69,27 @@ public class MessageData {
 
     public void setSenderUid(String senderUid) {
         this.senderUid = senderUid;
+    }
+
+    public boolean euqals(Object obj) {
+        if (obj == MessageData.class) {
+            MessageData ud = (MessageData) obj;
+            String tcStr = ud.getSenderUid();
+            return ud.equals(tcStr);
+        } else if (obj.equals(String.class)) {
+            String ud = obj.toString();
+            String tcStr = ud;
+            return ud.equals(tcStr);
+        } else {
+            return false;
+        }
+    }
+
+    public void setMine(int isMine) {
+        this.isMine = isMine;
+    }
+
+    public int getMine() {
+        return isMine;
     }
 }

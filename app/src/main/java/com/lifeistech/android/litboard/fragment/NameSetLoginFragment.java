@@ -73,57 +73,59 @@ public class NameSetLoginFragment extends android.support.v4.app.Fragment {
         sendName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!(editText.getText().toString().equals("")) || !(editText.getText().toString().equals(null))) {
+                    user = auth.getCurrentUser();
+                    if (user != null) {
+                        int i = 0;
+                        Boolean isMatch = false;
 
-                user = auth.getCurrentUser();
-                if (user != null) {
-                    int i = 0;
-                    Boolean isMatch = false;
-
-                    do {
-                        if (data.size() != 0) {
-                            if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(data.get(i).getUID())) {
-                                isMatch = true;
-                                break;
-                            } else {
-                                isMatch = false;
+                        do {
+                            if (data.size() != 0) {
+                                if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(data.get(i).getUID())) {
+                                    isMatch = true;
+                                    break;
+                                } else {
+                                    isMatch = false;
+                                }
                             }
-                        }
-                        if (isMatch) {
-                            continue;
+                            if (isMatch) {
+                                continue;
+                            } else {
+                                i++;
+                            }
+                        } while (i < data.size());
+
+                        String userUid = auth.getCurrentUser().getUid();
+                        String userName = editText.getText().toString();
+                        String userEmail = auth.getCurrentUser().getEmail();
+                        if (data.size() == 0) {
+                            setFirebaseUser(userName, userUid, userEmail, userUid + "_" + userName);
+                            pref.edit().putString("userName", userName).commit();
+                            pref.edit().putString("userUid", userUid).commit();
+                            pref.edit().putString("userEmail", userEmail).commit();
+
+
+                        } else if (isMatch == false) {
+                            setFirebaseUser(userName, userUid, userEmail, userUid + "_" + userName);
+                            pref.edit().putString("userName", userName).commit();
+                            pref.edit().putString("userUid", userUid).commit();
+                            pref.edit().putString("userEmail", userEmail).commit();
                         } else {
-                            i++;
+                            String currentUserName = pref.getString("userName", "");
+                            UserData ud = new UserData(currentUserName, userUid, userEmail, userUid + "_" + userName);
+                            int position = data.indexOf(ud);
+                            data.remove(position);
+                            setFirebaseUsersecond(position, userName, userUid, userEmail, userUid + "_" + userName);
+                            pref.edit().putString("userName", userName).commit();
+                            pref.edit().putString("userUid", userUid).commit();
+                            pref.edit().putString("userEmail", userEmail).commit();
+                            pref.edit().putString("uid_userName", userUid + "_" + userName).commit();
                         }
-                    } while (i < data.size());
 
-                    String userUid = auth.getCurrentUser().getUid();
-                    String userName = editText.getText().toString();
-                    String userEmail = auth.getCurrentUser().getEmail();
-                    if (data.size() == 0) {
-                        setFirebaseUser(userName, userUid, userEmail, userUid + "_" + userName);
-                        pref.edit().putString("userName", userName).commit();
-                        pref.edit().putString("userUid", userUid).commit();
-                        pref.edit().putString("userEmail", userEmail).commit();
-
-
-                    } else if (isMatch == false) {
-                        setFirebaseUser(userName, userUid, userEmail, userUid + "_" + userName);
-                        pref.edit().putString("userName", userName).commit();
-                        pref.edit().putString("userUid", userUid).commit();
-                        pref.edit().putString("userEmail", userEmail).commit();
-                    } else {
-                        String currentUserName = pref.getString("userName", "");
-                        UserData ud = new UserData(currentUserName,userUid,userEmail,userUid + "_" + userName);
-                        int position = data.indexOf(ud);
-                        data.remove(position);
-                        setFirebaseUsersecond(position,userName, userUid, userEmail, userUid + "_" + userName);
-                        pref.edit().remove("userName");
-                        pref.edit().putString("userName", userName).commit();
-                        pref.edit().putString("uid_userName", userUid + "_" + userName).commit();
                     }
+                    getActivity().finish();
 
                 }
-                getActivity().finish();
-
             }
         });
 
@@ -136,9 +138,9 @@ public class NameSetLoginFragment extends android.support.v4.app.Fragment {
         refMsg.child("user").setValue(data);
     }
 
-    public void setFirebaseUsersecond(int position,String name, String Uid, String email, String uid_userName) {
+    public void setFirebaseUsersecond(int position, String name, String Uid, String email, String uid_userName) {
         user = auth.getCurrentUser();
-        data.add(position,new UserData(name, Uid, email, uid_userName));
+        data.add(position, new UserData(name, Uid, email, uid_userName));
         refMsg.child("user").setValue(data);
     }
 

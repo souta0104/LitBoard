@@ -31,7 +31,7 @@ public class MessageTabFragment extends Fragment {
     DatabaseReference refMsg = database.getReference();
     MessageAdapter adapter;
     int isMine;
-
+    RecyclerView rv;
     ArrayList<MessageData> message;
     SharedPreferences pref;
 
@@ -40,13 +40,12 @@ public class MessageTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tab_message, container, false);
-
-        RecyclerView rv = (RecyclerView) v.findViewById(R.id.RecyclerView);
+        rv = (RecyclerView) v.findViewById(R.id.RecyclerView);
         pref = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
         isMine = 0;
 
         message = new ArrayList<MessageData>();
-        adapter = new MessageAdapter(message, isMine);
+        adapter = new MessageAdapter(message);
 
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -54,22 +53,24 @@ public class MessageTabFragment extends Fragment {
         rv.setLayoutManager(llm);
         rv.setAdapter(adapter);
 
-
         refMsg.child("chat").child("0").child("message").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                rv.scrollToPosition(adapter.getItemCount() - 1);
                 message.clear();
+                int i = 0;
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     MessageData messageData = dataSnapshot1.getValue(MessageData.class);
-                    message.add(messageData);
-                    if (messageData.getSenderUid().equals(pref.getString("userUid", ""))) {
+                    if (pref.getString("userUid", "").equals(messageData.getSenderUid())) {
                         isMine = 0;
                     } else {
                         isMine = 1;
-
                     }
+                    message.add(messageData);
+                    message.get(i).setMine(isMine);
+                    i++;
                 }
-
+                rv.scrollToPosition(adapter.getItemCount() - 1);
             }
 
             @Override
@@ -91,18 +92,18 @@ public class MessageTabFragment extends Fragment {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                rv.scrollToPosition(adapter.getItemCount() - 1);
                 message.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    message.add(dataSnapshot1.getValue(MessageData.class));
-                    for (MessageData messageData : message) {
-                        if (messageData.getSenderUid() == pref.getString("userUid", "")) {
-                            isMine = 0;
-                        } else {
-                            isMine = 1;
-                        }
+                    MessageData messageData = dataSnapshot1.getValue(MessageData.class);
+                    if (pref.getString("userUid", "").equals(messageData.getSenderUid())) {
+                        isMine = 0;
+                    } else {
+                        isMine = 1;
                     }
+                    message.add(messageData);
                 }
-
+                rv.scrollToPosition(adapter.getItemCount() - 1);
             }
 
             @Override
@@ -122,12 +123,8 @@ public class MessageTabFragment extends Fragment {
 
 
     public static MessageData dataSave(String sender, String message, int hour, int minute, String senderUid) {
-        MessageData messageData = new MessageData();
-        messageData.setSender(sender);
-        messageData.setMessage(message);
-        messageData.setHour(hour);
-        messageData.setMinute(minute);
-        messageData.setSenderUid(senderUid);
+        MessageData messageData = new MessageData(sender, message, hour, minute, senderUid);
         return messageData;
     }
+
 }

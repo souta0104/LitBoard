@@ -49,6 +49,7 @@ public class SendTabFragment extends Fragment {
         refMsg = database.getReference();
         pref = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
 
+
         v.findViewById(R.id.imageButton3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,12 +58,13 @@ public class SendTabFragment extends Fragment {
                 SimpleDateFormat sdfHour = new SimpleDateFormat("HH");
                 SimpleDateFormat sdfMinute = new SimpleDateFormat("mm");
                 //ここまで
-
-                MessageData messageData = MessageTabFragment.dataSave(pref.getString("userName", ""), editText.getText().toString(),
-                        Integer.valueOf(sdfHour.format(cTime.getTime())), Integer.valueOf(sdfMinute.format(cTime.getTime())), pref.getString("userUid", ""));
-                data.add(messageData);
-                refMsg.child("chat").child("0").child("message").setValue(data);
-                editText.setText(null);
+                if (!(editText.getText().toString().equals("")) || !(editText.getText().equals(null))) {
+                    MessageData messageData = MessageTabFragment.dataSave(pref.getString("userName", ""), editText.getText().toString(),
+                            Integer.valueOf(sdfHour.format(cTime.getTime())), Integer.valueOf(sdfMinute.format(cTime.getTime())), pref.getString("userUid", ""));
+                    data.add(messageData);
+                    refMsg.child("chat").child("0").child("message").setValue(data);
+                    editText.setText(null);
+                }
             }
         });
 
